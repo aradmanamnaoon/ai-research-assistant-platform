@@ -1,0 +1,50 @@
+[
+  {
+    "question": "What is retrieval-augmented generation and why does it matter?",
+    "reference": "Retrieval-Augmented Generation (RAG) is an architecture that improves LLM responses by retrieving relevant documents and injecting them into the model's context before generation. It matters because it reduces hallucination by grounding answers in real passages, overcomes knowledge cutoffs without retraining, and enables answering from private documents without baking them into model weights.",
+    "topic": "rag",
+    "expected_tools": []
+  },
+  {
+    "question": "What are the main techniques for improving retrieval quality beyond naive top-k cosine search?",
+    "reference": "Hybrid search combining dense vectors with sparse BM25 and reciprocal rank fusion; cross-encoder re-ranking of candidates; query rewriting and expansion such as multi-query retrieval or HyDE; and chunking strategies like parent-document retrieval.",
+    "topic": "rag",
+    "expected_tools": []
+  },
+  {
+    "question": "Explain the ReAct pattern for LLM agents.",
+    "reference": "ReAct interleaves reasoning and action: the model thinks about what to do next, emits a tool call, observes the result, and repeats until it produces a final answer. It grounds reasoning in observed evidence, enables self-correction after failed tool calls, and must be bounded with recursion limits or tool-call budgets in production.",
+    "topic": "agents",
+    "expected_tools": []
+  },
+  {
+    "question": "What does a LangGraph checkpointer enable and what interface must a custom one implement?",
+    "reference": "A checkpointer persists graph state after every super-step, enabling thread persistence across restarts, time travel to prior checkpoints, and human-in-the-loop interrupts. A custom checkpointer implements the BaseCheckpointSaver interface: get_tuple, list, put, and put_writes.",
+    "topic": "langgraph",
+    "expected_tools": []
+  },
+  {
+    "question": "Which deterministic metrics are useful for evaluating RAG systems?",
+    "reference": "Retrieval quality metrics such as recall@k, precision@k and MRR; generation quality metrics such as faithfulness/groundedness, answer relevance, and citation validity; plus latency and token cost percentiles.",
+    "topic": "evaluation",
+    "expected_tools": []
+  },
+  {
+    "question": "What are the standard failure-handling mitigations for robust LLM agents?",
+    "reference": "Retry transient errors with exponential backoff; return tool errors to the model as observations so it can adapt; isolate tool execution so one failing tool does not abort the pipeline; and bound all loops with recursion limits, token budgets and timeouts.",
+    "topic": "agents",
+    "expected_tools": []
+  },
+  {
+    "question": "How does LangGraph support streaming progress to API clients?",
+    "reference": "LangGraph supports simultaneous stream modes: values (full state after each step), updates (state deltas), messages (LLM tokens) and custom (progress events from inside nodes). SSE endpoints commonly forward updates-mode chunks so clients can render per-node progress in real time.",
+    "topic": "langgraph",
+    "expected_tools": []
+  },
+  {
+    "question": "Why should RAG evaluation measure both retrieval and generation quality?",
+    "reference": "Because failures can originate in either stage: poor retrieval (low recall@k) starves the generator of relevant passages, while a faithful generator can still produce unhelpful answers. Measuring both axes localizes the failure.",
+    "topic": "evaluation",
+    "expected_tools": []
+  }
+]

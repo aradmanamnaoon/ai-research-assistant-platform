@@ -1,0 +1,42 @@
+# Core agent stack
+langchain-core>=1.6.5
+langgraph>=1.2.12
+langgraph-checkpoint>=4.2.0
+langgraph-prebuilt>=1.1.0
+langsmith>=0.14.1
+
+# LLM provider (OpenAI-compatible Chat Completions)
+openai>=3.13.0
+
+# API layer
+fastapi>=0.141.1
+uvicorn>=0.52.4
+python-multipart>=0.0.32
+
+# Data validation & settings
+pydantic>=2.13.5
+pydantic-settings>=2.15.0
+
+# RAG storage
+chromadb>=1.5.9
+
+# Persistence
+SQLAlchemy>=2.0.52
+
+# HTTP client (tools)
+httpx>=0.28.1
+
+# XML hardening (XXE-safe parsing for the arXiv tool)
+defusedxml>=0.7.1
+
+# PDF document ingestion (lazy import in app/retrieval/ingest.py)
+pypdf>=4.0.0
+
+# TypedDict backport (used directly across the codebase)
+typing_extensions>=4.12.0
+
+# Optional extras
+# langchain-huggingface>=1.2.2   # alternative local embeddings
+
+# Development / testing
+pytest>=9.1.1

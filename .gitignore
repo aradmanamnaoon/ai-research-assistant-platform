@@ -1,0 +1,39 @@
+# Environment & secrets
+.env
+.env.local
+*.env
+
+# Local agent/dev instructions (not part of the published project)
+CLAUDE.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Runtime data (ingested docs, vector store, checkpoints, notes)
+data/chroma/
+data/checkpoints.sqlite
+data/notes/
+data/uploads/
+.smoke_data/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Build
+dist/
+build/

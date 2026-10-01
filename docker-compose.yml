@@ -1,0 +1,22 @@
+services:
+  api:
+    build: .
+    image: ai-research-assistant:latest
+    container_name: research-assistant-api
+    ports:
+      - "8000:8000"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      # Container paths override host defaults.
+      DATA_DIR: /app/data
+      CHROMA_DIR: /app/data/chroma
+      SQLITE_PATH: /app/data/checkpoints.sqlite
+      NOTES_PATH: /app/data/notes/notes.jsonl
+    volumes:
+      - research-data:/app/data
+    restart: unless-stopped
+
+volumes:
+  research-data:
