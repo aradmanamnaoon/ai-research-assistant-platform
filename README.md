@@ -1,6 +1,8 @@
 # AI Research Assistant Platform
 
-A production-style **multi-agent research assistant** built with **LangGraph**, **LangChain**, **ChromaDB RAG** and **LangSmith** observability, served by **FastAPI**.
+An **experimental multi-agent research assistant reference implementation** built with **LangGraph**, **LangChain**, **ChromaDB RAG** and optional **LangSmith** observability, served by **FastAPI**.
+
+> **Evaluation status:** This is not an independently validated research-answering system. Citations are formatted and reference-number checked, but the checks do **not** establish that a cited document supports a claim. The documented fake-model baseline reported `citation_validity = 0.00`; that is a reason to inspect results, not to infer real-model reliability. No fresh end-to-end test run is claimed here. See [evaluation limitations](docs/evaluation.md).
 
 Give it a question and it decides what to do: retrieve from your uploaded documents, search Wikipedia/arXiv/the web, run utility tools — then synthesizes a cited, grounded answer, with a quality-gate loop that refines weak drafts.
 
@@ -30,7 +32,7 @@ Compatible branches run **in parallel** (fan-out) and merge through state reduce
 - **Retrieval agent** — semantic search over ChromaDB (multi-query + dedup + LLM relevance pass) with **local ONNX embeddings** — zero embedding API needed
 - **Research agent** — ReAct tool loop (`create_react_agent`) over Wikipedia, arXiv and optional Tavily; never repeats prior searches; bounded by a recursion limit
 - **Tool execution agent** — planner-requested tools with per-call error isolation (safe calculator, persistent research notebook)
-- **Final response agent** — citation-grounded synthesis with parsed `[n]` citations and a Sources section
+- **Final response agent** — citation-formatted synthesis with parsed `[n]` references and a Sources section; reference-number validity is not factual attribution
 - **Reflector** — LLM gap analysis with a bounded refinement loop back to the researcher
 - **Parallel fan-out** — planner-selected branches execute concurrently
 - **Persistent state** — custom `BaseCheckpointSaver` (SQLite) + SQLAlchemy conversation store
@@ -173,7 +175,7 @@ python scripts/run_evaluation.py --no-upload
 python scripts/seed_langsmith.py && python scripts/run_evaluation.py
 ```
 
-Baseline scores in offline mode (deterministic scripted model — demonstrates the harness end-to-end; scores with a real LLM reflect actual model quality):
+Previously documented example scores for the scripted offline mode (NOT rerun or independently verified in this documentation update; these demonstrate the test harness, not answer quality):
 
 | Evaluator | Score (offline baseline) |
 |---|---|
