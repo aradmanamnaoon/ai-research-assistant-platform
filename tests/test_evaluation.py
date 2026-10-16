@@ -53,6 +53,40 @@ def test_citation_validity_no_citations() -> None:
     assert result["score"] == 0.0
 
 
+
+def test_citation_validity_sources_list_alone_is_not_citation() -> None:
+    result = citation_validity(
+        {"question": "q"},
+        {"output": "An unsupported statement.\n\nSources:\n[1] paper.md"},
+    )
+    assert result["score"] == 0.0
+
+
+def test_citation_validity_requires_actual_sources_section() -> None:
+    result = citation_validity(
+        {"question": "q"},
+        {"output": "Claim [1].\n\n[1] dangling reference outside a Sources section"},
+    )
+    assert result["score"] == 0.5
+
+
+def test_citation_validity_ignores_bibliography_only_extra_number() -> None:
+    result = citation_validity(
+        {"question": "q"},
+        {"output": "Claim [2].\n\nSources:\n[1] first.md\n[2] second.md"},
+    )
+    assert result["score"] == 1.0
+
+
+def test_citation_validity_partial_dangling() -> None:
+    result = citation_validity(
+        {"question": "q"},
+        {"output": "First [1] and second [2].\n\nSources:\n[1] first.md"},
+    )
+    assert result["score"] == 0.5
+
+
+
 def test_groundedness_rewards_citations() -> None:
     cited = groundedness_heuristic({}, {"output": "Fact [1]."})
     uncited = groundedness_heuristic({}, {"output": "Fact without citation."})
