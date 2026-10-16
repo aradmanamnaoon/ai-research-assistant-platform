@@ -63,34 +63,42 @@ def citation_validity(
     outputs: dict[str, Any],
     reference_outputs: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Check that bracketed citations resolve to real listed sources.
+    """Check reference numbering, not whether a source supports a claim.
 
-    Extracts ``[n]`` references from the answer and verifies each number
-    is backed by a matching ``[n] source`` line in the Sources section.
+    Only citations *before* a stand-alone Sources heading count as inline
+    citations. Numbered bibliography entries cannot count as evidence that
+    the answer actually cited anything.
     """
     answer = str(outputs.get("output", outputs.get("answer", "")))
-    used = {int(m) for m in re.findall(r"\[(\d+)\]", answer)}
+    heading = re.search(r"(?im)^sources\s*:\s*$", answer)
+    answer_text = answer[: heading.start()] if heading else answer
+    source_text = answer[heading.end() :] if heading else ""
+
+    used = {int(m) for m in re.findall(r"\[(\d+)\]", answer_text)}
     if not used:
         return {
             "key": "citation_validity",
             "score": 0.0,
-            "comment": "No inline citations found in the answer",
+            "comment": "No inline citations found in the answer text",
         }
 
-    listed = {int(m) for m in re.findall(r"^\[(\d+)\]", answer, flags=re.MULTILINE)}
+    listed = {int(m) for m in re.findall(r"(?m)^\[(\d+)\]\s+\S+", source_text)}
     if not listed:
         return {
             "key": "citation_validity",
             "score": 0.5,
-            "comment": "Citations used but no Sources section found",
+            "comment": "Citations used but no numbered Sources entries found",
         }
 
     dangling = used - listed
-    score = 1.0 if not dangling else max(0.0, 1.0 - len(dangling) / max(len(used), 1))
+    score = 1.0 if not dangling else max(0.0, 1.0 - len(dangling) / len(used))
     return {
         "key": "citation_validity",
         "score": score,
-        "comment": "All citations resolve" if not dangling else f"Dangling citations: {sorted(dangling)}",
+        "comment": (
+            "All inline citation numbers resolve to a Sources entry"
+            if not dangling else f"Dangling citations: {sorted(dangling)}"
+        ),
     }
 
 
