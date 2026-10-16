@@ -1,20 +1,28 @@
 # Evaluation Guide
 
-This project ships a runnable evaluation suite with two modes and four
-evaluators.
+This project ships a runnable evaluation suite with two modes. These checks
+are **development diagnostics**, not independent measurements of factual
+accuracy, hallucination rate, or suitability for high-stakes decisions.
+
+**Important:** `citation_validity` checks whether inline numeric references
+resolve to numbered entries in the Sources section. It does not open sources,
+check quoted text, or verify entailment. A source list without any inline
+references must score 0.0. Unavailable or simulated judge scores are not
+evidence of correctness.
 
 ## Evaluators
 
 | Evaluator | Type | Measures |
 |---|---|---|
 | `response_relevance` | deterministic | Fraction of the question's significant keywords that appear in the answer |
-| `citation_validity` | deterministic | Every `[n]` citation resolves to a listed source |
+| `citation_validity` | deterministic | Inline `[n]` references resolve to numbered Sources entries (not proof of source support) |
 | `groundedness_heuristic` | deterministic | Rewards citations, penalizes unsupported superlatives ("always", "obviously"...) |
 | `helpfulness_judge` | LLM-as-judge | 0–1 helpfulness of the answer for the question |
 | `correctness_judge` | LLM-as-judge | Agreement with the reference answer (needs references) |
 
-Judges degrade to a neutral score with an explanatory comment when no LLM
-is reachable, so runs never hard-fail.
+Unavailable judges can return a neutral 0.5 with an explanation. Exclude these
+fallback rows from meaningful model-quality averages; a successful command
+exit does not imply a valid judge evaluation.
 
 ## Dataset
 
@@ -37,7 +45,8 @@ python scripts/seed_langsmith.py      # create/sync the dataset
 python scripts/run_evaluation.py      # runs evaluate() and prints the experiment URL
 ```
 
-Local mode output:
+**Illustrative output only** (not a measured result from this update; actual
+scores depend on model mode, local data, and configuration):
 
 ```
 Evaluation report
