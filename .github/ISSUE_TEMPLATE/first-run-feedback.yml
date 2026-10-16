@@ -1,0 +1,50 @@
+name: First-run or citation feedback
+description: Share reproducible behavior from an authorized, nonsensitive test
+title: "[first-run] "
+labels: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a specific observation, including failures.
+        Please do not paste API keys, uploaded private documents, identifiable records,
+        raw prompt logs containing sensitive content, or proprietary datasets.
+        Feedback is not counted as proof of a unique user or validated answer quality.
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Run mode
+      options:
+        - Fake model / local harness
+        - Live LLM (please omit secrets and sensitive prompts)
+        - Not executed; documentation question
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      description: OS, Python version, relevant commit SHA, and model mode
+      placeholder: "Ubuntu 24.04; Python 3.11; commit abc123; fake"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Minimal reproducible steps on nonsensitive inputs
+    validations:
+      required: true
+  - type: textarea
+    id: observed
+    attributes:
+      label: Observed versus expected behavior
+      description: Explain if citations resolve but do not support a claim
+    validations:
+      required: true
+  - type: checkboxes
+    id: safe
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I checked that this report contains no secrets or restricted data
+          required: true
