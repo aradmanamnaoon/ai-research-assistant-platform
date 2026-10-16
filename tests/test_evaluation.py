@@ -52,8 +52,6 @@ def test_citation_validity_no_citations() -> None:
     result = citation_validity({"question": "q"}, {"output": "No citations here."})
     assert result["score"] == 0.0
 
-
-
 def test_citation_validity_sources_list_alone_is_not_citation() -> None:
     result = citation_validity(
         {"question": "q"},
@@ -84,8 +82,6 @@ def test_citation_validity_partial_dangling() -> None:
         {"output": "First [1] and second [2].\n\nSources:\n[1] first.md"},
     )
     assert result["score"] == 0.5
-
-
 
 def test_groundedness_rewards_citations() -> None:
     cited = groundedness_heuristic({}, {"output": "Fact [1]."})
