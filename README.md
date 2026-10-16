@@ -26,6 +26,8 @@ Give it a question and it decides what to do: retrieve from your uploaded docume
 
 Compatible branches run **in parallel** (fan-out) and merge through state reducers. Everything is checkpointed to SQLite, so conversations survive restarts and can be inspected via time-travel.
 
+**Tried an authorized synthetic example?** [Report first-run or citation feedback](https://github.com/aradmanamnaoon/ai-research-assistant-platform/issues/new?template=first-run-feedback.yml), including reproducible failures. Do not upload private documents, prompts, or secrets. Reports are voluntary; they are not evidence of independently verified answer quality.
+
 ## Features
 
 - **Planner agent** — classifies each question and emits a structured JSON research plan (retrieval? web? tools? steps?), with a heuristic fallback so planning failures never crash the graph
